@@ -1,0 +1,8 @@
+Test Case ID,Test Scenario,Preconditions,Test Steps,Test Data,Expected Results,Actual Results,Status,Priority
+TC-003,Verify API health check returns HTTP 201,Postman is available and an internet connection is established.,"1. Open Postman.
+2. Create a GET request.
+3. Enter the endpoint from Test Data.
+4. Click the Send button.
+5. Check the response status code.","HTTP Method: GET
+Endpoint: https://restful-booker.herokuapp.com/ping
+Request Body: None",The API returns HTTP status code 201 Created.,The API returned HTTP status code 201 Created.,PASS,High
