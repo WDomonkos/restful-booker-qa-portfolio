@@ -1,12 +1,12 @@
 Test Case ID,Test Scenario,Preconditions,Test Steps,Test Data,Expected Results,Actual Results,Status,Priority
-TC-003,Verify API health check returns HTTP 201,Postman is available and an internet connection is established.,"1. Open Postman.
+TC-001,Verify API health check returns HTTP 201,Postman is available and an internet connection is established.,"1. Open Postman.
 2. Create a GET request.
 3. Enter the endpoint from Test Data.
 4. Click the Send button.
 5. Check the response status code.","HTTP Method: GET
 Endpoint: https://restful-booker.herokuapp.com/ping
 Request Body: None",The API returns HTTP status code 201 Created.,The API returned HTTP status code 201 Created.,PASS,High
-TC-004,Verify booking creation with valid data,Restful Booker API is accessible and Postman is available.,"1. Open Postman.
+TC-002,Verify booking creation with valid data,Restful Booker API is accessible and Postman is available.,"1. Open Postman.
 2. Create a POST request.
 3. Enter the endpoint specified in Test Data.
 4. Set Body to raw JSON.
@@ -37,7 +37,7 @@ Request Body:
 4. The returned firstname was ""John"".
 5. The returned totalprice was 250.
 6. All 5 Postman tests passed.",PASS,High
-TC-005,Verify retrieving an existing booking by ID,A booking has been successfully created and its booking ID is available.,"1. Open Postman.
+TC-003,Verify retrieving an existing booking by ID,A booking has been successfully created and its booking ID is available.,"1. Open Postman.
 2. Create a GET request.
 3. Enter the endpoint specified in Test Data.
 4. Append the existing booking ID to the URL.
@@ -46,5 +46,24 @@ TC-005,Verify retrieving an existing booking by ID,A booking has been successful
 Endpoint: https://restful-booker.herokuapp.com/booking/{`{bookingid}`}
 Booking ID: An existing booking ID returned by POST /booking
 Request Body: None","1. The API returns HTTP status code 200 OK.
-2. The response contains a firstname field with the value ""John"".","1. The API returned HTTP status code 200 OK.
+2. Firstname is a non-empty string; totalprice is a number.","1. The API returned HTTP status code 200 OK.
 2. The response contained a firstname field with the value ""John"".",PASS,High
+TC-004,Verify successful booking update using PUT,An existing booking ID is available. Valid Basic Auth credentials are configured.,"1. Send PUT /booking/{bookingId} with updated booking data. 
+2. Verify HTTP status. 
+3. Verify updated firstname and totalprice.","HTTP Method: PUT
+Endpoint: https://restful-booker.herokuapp.com/booking/{{bookingId}}
+Authorization: Basic Auth
+Updated firstname: Peter
+Updated totalprice: 350",HTTP 200 OK; firstname = Peter; totalprice = 350,HTTP 200 OK; all 3 Postman assertions passed,PASS,High
+TC-005,Verify GET request for a non-existent booking,A non-existent booking ID is used.,"1. Send GET /booking/999999999 
+ 2. Verify HTTP status code",Booking ID: 999999999,HTTP 404 Not Found,HTTP 404 Not Found; 1/1 Postman assertion passed,PASS,Medium
+TC-006,Verify booking update is rejected without authentication,An existing booking ID is available.,"1. Send PUT /booking/{bookingId} without authentication.  
+2. Verify HTTP status code.  
+3. Verify response body.",Authorization: No Auth; valid bookingId,HTTP 403 Forbidden; response body: Forbidden,HTTP 403 Forbidden; response body: Forbidden; 2/2 assertions passed,PASS,High
+"TC-007
+",Verify successful booking deletion,An existing booking ID is available. Valid Basic Auth credentials are configured.,"1. Send DELETE /booking/{bookingId}. 
+2. Verify HTTP 201. 
+3. Send GET /booking/{bookingId}. 
+4. Verify HTTP 404.
+",Valid bookingId; Basic Auth: admin,"DELETE returns HTTP 201; subsequent GET returns HTTP 404
+",DELETE: HTTP 201 (1/1 assertion passed); GET: HTTP 404 (manually verified),PASS,High
